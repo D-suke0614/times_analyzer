@@ -1,0 +1,33 @@
+name: Build Test
+on:
+  push:
+    branches-ignore:
+      - "main"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: cache-node-modules
+        uses: actions/cache@v4
+        id: node_modules_cache_id
+        env:
+          cache-name: cache node_modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: npm add
+        if: ${{ steps.node_module_cache_id.outputs.cache-hit != 'true' }}
+        run: npm install
+
+      - name: app build
+        run: npm run build
