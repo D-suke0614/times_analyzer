@@ -1,4 +1,5 @@
 import { WebClient } from '@slack/web-api' 
+import Link from 'next/link'
 import times_mapping from '../../times_mapping.json'
 
 
@@ -43,10 +44,15 @@ export default async function Home() {
     <main>
       <div className='text-center'>
         <ul className=''>
-          {times_mapping.map((item) => (
-            <li key={item.id}>
-              id: {item.id}, name: {item.name}
-            </li>
+          {times_mapping.map((item, idx) => (
+            <div className='w-fit pl-3.5' key={item.id}>
+              <Link href={`/analyze/${item.id}`}>
+                <li className='font-2xl font-bold py-1'>
+                  {`${idx}. name: ${item.name}`}
+                  {/* {`{ "id": "${item.id}", "name": "${item.name}", "creator": "${item.creator}" },`} */}
+                </li>
+              </Link>
+            </div>
           ))}
         </ul>
       </div>
