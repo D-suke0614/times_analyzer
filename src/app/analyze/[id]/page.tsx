@@ -1,9 +1,9 @@
-import { WebClient } from '@slack/web-api'
+import { ConversationsHistoryResponse, WebClient } from '@slack/web-api'
 import Link from 'next/link'
 import React from 'react'
 import times_mapping from '../../../../times_mapping.json'
 
-const fetchMessage = async (channelId: string, creator: string) => {
+const fetchConversationsHistories = async (channelId: string) => {
   const token = process.env.TOKEN
   const client = new WebClient(token)
 
@@ -15,15 +15,19 @@ const fetchMessage = async (channelId: string, creator: string) => {
   )
   // console.log(lastMonth)
 
-  const rawResponse = await client.conversations.history({
+  const rawData: ConversationsHistoryResponse = await client.conversations.history({
     token,
     channel: channelId,
     limit: 200,
     oldest: lastMonth.toString(),
   })
-  const response = Response.json(rawResponse)
-  const formattedResponse = await response.json()
-  const filteredResponse = formattedResponse.messages
+  const response: Response = Response.json(rawData)
+  const conversationsHistories = await response.json()
+  return conversationsHistories
+}
+
+const getChannelCreatorsConversations = (conversationsHistories: any, creator: string) => {
+  const filteredResponse = conversationsHistories.messages
     .filter((message: any) => {
       return message.user === creator
     })
@@ -42,7 +46,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const channelInfo = times_mapping.filter((item) => {
     return item.id === channelId
   })
-  const messages = await fetchMessage(channelId, channelInfo[0].creator)
+  const conversationsHistories = await fetchConversationsHistories(channelId)
+  const messages = getChannelCreatorsConversations(conversationsHistories, channelInfo[0].creator)
   // console.log('messages', messages)
   return (
     <div>
