@@ -24,7 +24,6 @@ const fetchChannelList = async () => {
     })
     const response = Response.json(rawResponse)
     const formattedResponse = await response.json()
-    // console.log('formattedResponse', formattedResponse)
     const filteredResponse = formattedResponse.channels.filter((channel: any) => {
       return channel.name.includes('times_')
     })
@@ -49,7 +48,6 @@ export default async function Home() {
               <Link href={`/analyze/${item.id}`}>
                 <li className='font-2xl font-bold py-1'>
                   {`${idx}. name: ${item.name}`}
-                  {/* {`{ "id": "${item.id}", "name": "${item.name}", "creator": "${item.creator}" },`} */}
                 </li>
               </Link>
             </div>
