@@ -1,4 +1,5 @@
 import { WebClient } from '@slack/web-api' 
+import Link from 'next/link'
 import times_mapping from '../../times_mapping.json'
 
 
@@ -23,7 +24,6 @@ const fetchChannelList = async () => {
     })
     const response = Response.json(rawResponse)
     const formattedResponse = await response.json()
-    // console.log('formattedResponse', formattedResponse)
     const filteredResponse = formattedResponse.channels.filter((channel: any) => {
       return channel.name.includes('times_')
     })
@@ -43,10 +43,14 @@ export default async function Home() {
     <main>
       <div className='text-center'>
         <ul className=''>
-          {times_mapping.map((item) => (
-            <li key={item.id}>
-              id: {item.id}, name: {item.name}
-            </li>
+          {times_mapping.map((item, idx) => (
+            <div className='w-fit pl-3.5' key={item.id}>
+              <Link href={`/analyze/${item.id}`}>
+                <li className='font-2xl font-bold py-1'>
+                  {`${idx}. name: ${item.name}`}
+                </li>
+              </Link>
+            </div>
           ))}
         </ul>
       </div>
