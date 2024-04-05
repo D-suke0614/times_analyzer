@@ -1,8 +1,7 @@
-import { WebClient } from '@slack/web-api' 
+import { WebClient } from '@slack/web-api'
 import Link from 'next/link'
 import times_mapping from '../../times_mapping.json'
 import Search from './components/Search'
-
 
 const fetchChannelList = async () => {
   // const res = await fetch('http://localhost:3000/api/conversations/list', {
@@ -11,12 +10,12 @@ const fetchChannelList = async () => {
   // })
   // const formattedResponse = await res.json()
   // return formattedResponse
-  
+
   const token = process.env.TOKEN
   const webClient = new WebClient(token)
   let cursor
   const result = []
-  while(cursor !== '') {
+  while (cursor !== '') {
     const rawResponse = await webClient.conversations.list({
       token,
       exclude_archived: true,
@@ -34,7 +33,7 @@ const fetchChannelList = async () => {
     }
     cursor = formattedResponse.response_metadata.next_cursor
     // 3秒に１回のリクエストがSlackAPIの仕様の上限（20req/1m）
-  }  
+  }
   return result
 }
 
@@ -43,8 +42,8 @@ export default async function Home() {
   return (
     <main className='h-screen'>
       <div className='pt-16'>
-      <Search />
+        <Search />
       </div>
     </main>
-  );
+  )
 }
