@@ -2,14 +2,14 @@ import { ConversationsHistoryResponse, WebClient } from '@slack/web-api'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
 import times_mapping from '../../../../times_mapping.json'
-import LineChart from '@/app/components/LineChart'
 import Loading from './loading'
+import LineChart from '@/app/components/LineChart'
 
 // 1w = 604800s
 
 /**
- * 
- * @param num 
+ *
+ * @param num
  * @returns UnixTimestamp
  */
 const getUnixTimestamp = (num: number = -1): number => {
@@ -20,9 +20,9 @@ const getUnixTimestamp = (num: number = -1): number => {
 }
 
 /**
- * 
- * @param channelId 
- * @param months 
+ *
+ * @param channelId
+ * @param months
  * @returns 指定した期間のトーク履歴を取得
  */
 const fetchConversationsHistories = async (channelId: string, months: number) => {
@@ -32,14 +32,14 @@ const fetchConversationsHistories = async (channelId: string, months: number) =>
 
   for (let i = 0; i < months; i++) {
     const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i)
-    const oldestUnixTimestamp = getUnixTimestamp(- (i + 1))
+    const oldestUnixTimestamp = getUnixTimestamp(-(i + 1))
 
     const rawData: ConversationsHistoryResponse = await client.conversations.history({
       token,
       channel: channelId,
       limit: 500,
       latest: latestUnixTimestamp.toString(),
-      oldest: oldestUnixTimestamp.toString()
+      oldest: oldestUnixTimestamp.toString(),
     })
     const response: Response = Response.json(rawData)
     const jsonResponse = await response.json()
@@ -49,9 +49,9 @@ const fetchConversationsHistories = async (channelId: string, months: number) =>
 }
 
 /**
- * 
- * @param conversationsHistories 
- * @param channelCreator 
+ *
+ * @param conversationsHistories
+ * @param channelCreator
  * @returns 取得したトーク履歴から、チャンネル作成者の送信した内容だけを取得
  */
 const searchChannelCreatorsConversations = (
@@ -60,16 +60,16 @@ const searchChannelCreatorsConversations = (
 ) => {
   const channelCreatorsConversations = conversationsHistories.map((conversationsHistory) => {
     return conversationsHistory.messages
-    .filter((message: any) => {
-      return message.user === channelCreator
-    })
-    .map((message: any) => {
-      const sendDate: string = new Date(message.ts * 1000).toLocaleString()
-      return {
-        ...message,
-        sendDate,
-      }
-    })
+      .filter((message: any) => {
+        return message.user === channelCreator
+      })
+      .map((message: any) => {
+        const sendDate: string = new Date(message.ts * 1000).toLocaleString()
+        return {
+          ...message,
+          sendDate,
+        }
+      })
   })
   return channelCreatorsConversations
 }
