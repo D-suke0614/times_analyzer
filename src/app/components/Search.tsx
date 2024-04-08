@@ -15,10 +15,8 @@ const Search = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     const filteredChannels = channels.filter((channel) => {
-      console.log(value)
       return value ? channel.name.match(value) : false
     })
-    console.log(filteredChannels)
     setSearchResult(filteredChannels)
   }
   return (
