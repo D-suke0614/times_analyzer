@@ -27,7 +27,6 @@ const fetchChannelList = async () => {
     const filteredResponse = formattedResponse.channels.filter((channel: any) => {
       return channel.name.includes('times_')
     })
-    console.log('filteredResponse', filteredResponse)
     if (filteredResponse.length) {
       result.push(...filteredResponse)
     }

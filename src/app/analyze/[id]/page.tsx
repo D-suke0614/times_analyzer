@@ -1,69 +1,105 @@
 import { ConversationsHistoryResponse, WebClient } from '@slack/web-api'
 import Link from 'next/link'
-import React from 'react'
+import React, { Suspense } from 'react'
 import times_mapping from '../../../../times_mapping.json'
+import LineChart from '@/app/components/LineChart'
+import Loading from './loading'
 
-const fetchConversationsHistories = async (channelId: string) => {
-  const token = process.env.TOKEN
-  const client = new WebClient(token)
+// 1w = 604800s
 
-  // 1w = 604800s
-  // 先月をUNIX Timestampで取得
-  const date = new Date()
-  const lastMonth = Math.floor(
-    new Date(date.getFullYear(), date.getMonth() - 1, date.getDate()).getTime() / 1000,
+/**
+ * 
+ * @param num 
+ * @returns UnixTimestamp
+ */
+const getUnixTimestamp = (num: number = -1): number => {
+  const date: Date = new Date()
+  return Math.floor(
+    new Date(date.getFullYear(), date.getMonth() + num, date.getDate()).getTime() / 1000,
   )
-  // console.log(lastMonth)
+}
 
-  const rawData: ConversationsHistoryResponse = await client.conversations.history({
-    token,
-    channel: channelId,
-    limit: 200,
-    oldest: lastMonth.toString(),
-  })
-  const response: Response = Response.json(rawData)
-  const conversationsHistories = await response.json()
+/**
+ * 
+ * @param channelId 
+ * @param months 
+ * @returns 指定した期間のトーク履歴を取得
+ */
+const fetchConversationsHistories = async (channelId: string, months: number) => {
+  const token: string | undefined = process.env.TOKEN
+  const client: WebClient = new WebClient(token)
+  const conversationsHistories = []
+
+  for (let i = 0; i < months; i++) {
+    const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i)
+    const oldestUnixTimestamp = getUnixTimestamp(- (i + 1))
+
+    const rawData: ConversationsHistoryResponse = await client.conversations.history({
+      token,
+      channel: channelId,
+      limit: 500,
+      latest: latestUnixTimestamp.toString(),
+      oldest: oldestUnixTimestamp.toString()
+    })
+    const response: Response = Response.json(rawData)
+    const jsonResponse = await response.json()
+    conversationsHistories.push(jsonResponse)
+  }
   return conversationsHistories
 }
 
-const getChannelCreatorsConversations = (conversationsHistories: any, creator: string) => {
-  const filteredResponse = conversationsHistories.messages
+/**
+ * 
+ * @param conversationsHistories 
+ * @param channelCreator 
+ * @returns 取得したトーク履歴から、チャンネル作成者の送信した内容だけを取得
+ */
+const searchChannelCreatorsConversations = (
+  conversationsHistories: any[],
+  channelCreator: string,
+) => {
+  const channelCreatorsConversations = conversationsHistories.map((conversationsHistory) => {
+    return conversationsHistory.messages
     .filter((message: any) => {
-      return message.user === creator
+      return message.user === channelCreator
     })
     .map((message: any) => {
-      const sendDate = new Date(message.ts * 1000).toLocaleString()
+      const sendDate: string = new Date(message.ts * 1000).toLocaleString()
       return {
         ...message,
         sendDate,
       }
     })
-  return filteredResponse
+  })
+  return channelCreatorsConversations
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
   const channelId: string = params.id
+  // paramsから表示しているtimesチャンネルの情報を特定
   const channelInfo = times_mapping.filter((item) => {
     return item.id === channelId
   })
-  const conversationsHistories = await fetchConversationsHistories(channelId)
-  const messages = getChannelCreatorsConversations(conversationsHistories, channelInfo[0].creator)
-  // console.log('messages', messages)
+  // 何ヶ月分のデータを分析するか
+  const months = 4
+  const conversationsHistories: any[] = await fetchConversationsHistories(channelId, months)
+  const messages = searchChannelCreatorsConversations(
+    conversationsHistories,
+    channelInfo[0].creator,
+  )
   return (
     <div>
-      <Link href={'/'}>Go to Home</Link>
-      id: {channelId}
-      投稿数: {messages.length}
-      <ul>
-        {messages.map((message: any) => (
-          <div className='py-5' key={message.ts}>
-            <li>
-              message: {message.text}
-              <div>time: {message.sendDate}</div>
-            </li>
-          </div>
-        ))}
-      </ul>
+      <div>
+        <Link href={'/'}>Go to Home</Link>
+        <div>
+          id: {channelId} - 投稿数: {messages.length}
+        </div>
+      </div>
+      <div className='w-2/3 h-2/3 text-center mt-5 mx-auto'>
+        <Suspense fallback={<Loading />}>
+          <LineChart messages={messages} channelName={channelInfo[0].name} />
+        </Suspense>
+      </div>
     </div>
   )
 }
