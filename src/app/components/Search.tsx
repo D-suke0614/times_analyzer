@@ -49,7 +49,9 @@ const Search = () => {
             handleChange(e)
           }}
         />
-        <button className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500'>analyze</button>
+        <button className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500'>
+          analyze
+        </button>
       </div>
       <div
         className={`flex flex-col items-start pt-2 max-h-80 ${searchResult?.length ? 'bg-white overflow-y-scroll border-solid border-2 rounded-md' : ''} `}
@@ -58,12 +60,18 @@ const Search = () => {
           searchResult.map((result: TChannelInfo) => (
             <div className='w-full hover:bg-gray-300 hover:opacity-50' key={result.id}>
               {/* <Link className='w-full px-2 py-1 block' href={`/analyze/${result.id}`}> */}
-                <div className='w-full px-2 py-1'>
+              <div className='w-full px-2 py-1'>
                 <label className='text-center flex' htmlFor={result.id}>
-                  <input className='mr-2' id={result.id} type="checkbox" value={result.id} onChange={(e) => handleCheckBox(e)}  />
-                    {result.name}
-                  </label>
-                </div>
+                  <input
+                    className='mr-2'
+                    id={result.id}
+                    type='checkbox'
+                    value={result.id}
+                    onChange={(e) => handleCheckBox(e)}
+                  />
+                  {result.name}
+                </label>
+              </div>
               {/* </Link> */}
             </div>
           ))
