@@ -1,6 +1,4 @@
 import { WebClient } from '@slack/web-api'
-import Link from 'next/link'
-import times_mapping from '../../times_mapping.json'
 import Search from './components/Search'
 
 const fetchChannelList = async () => {

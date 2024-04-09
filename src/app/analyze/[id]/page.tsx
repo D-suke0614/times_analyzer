@@ -81,21 +81,21 @@ export default async function Page({ params }: { params: { id: string } }) {
     return item.id === channelId
   })
   // 何ヶ月分のデータを分析するか
-  const months = 4
+  const months = 6
   const conversationsHistories: any[] = await fetchConversationsHistories(channelId, months)
   const messages = searchChannelCreatorsConversations(
     conversationsHistories,
     channelInfo[0].creator,
   )
   return (
-    <div>
-      <div>
-        <Link href={'/'}>Go to Home</Link>
+    <div className='mx-aut'>
+      <div className='mt-20 text-center'>
+        <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>Analyze other channels...</Link>
         <div>
-          id: {channelId} - 投稿数: {messages.length}
+          期間: 直近{messages.length}ヶ月
         </div>
       </div>
-      <div className='w-2/3 h-2/3 text-center mt-5 mx-auto'>
+      <div className='w-2/3 h-2/3 mt-20 mx-auto'>
         <Suspense fallback={<Loading />}>
           <LineChart messages={messages} channelName={channelInfo[0].name} />
         </Suspense>
