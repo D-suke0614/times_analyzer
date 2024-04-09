@@ -6,6 +6,15 @@ import Loading from './loading'
 import LineChart from '@/app/components/LineChart'
 
 // 1w = 604800s
+/**
+ * 何ヶ月分のデータを分析するか
+ */
+const MONTHS: number = 6
+
+/**
+ * 一回のリクエストで取得するデータ
+ */
+const LIMIT: number = 500
 
 /**
  *
@@ -34,16 +43,20 @@ const fetchConversationsHistories = async (channelId: string, months: number) =>
     const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i)
     const oldestUnixTimestamp = getUnixTimestamp(-(i + 1))
 
-    const rawData: ConversationsHistoryResponse = await client.conversations.history({
-      token,
-      channel: channelId,
-      limit: 500,
-      latest: latestUnixTimestamp.toString(),
-      oldest: oldestUnixTimestamp.toString(),
-    })
-    const response: Response = Response.json(rawData)
-    const jsonResponse = await response.json()
-    conversationsHistories.push(jsonResponse)
+    try {
+      const rawData: ConversationsHistoryResponse = await client.conversations.history({
+        token,
+        channel: channelId,
+        limit: LIMIT,
+        latest: latestUnixTimestamp.toString(),
+        oldest: oldestUnixTimestamp.toString(),
+      })
+      const response: Response = Response.json(rawData)
+      const jsonResponse = await response.json()
+      conversationsHistories.push(jsonResponse)
+    } catch(e) {
+      console.error(e)
+    }
   }
   return conversationsHistories
 }
@@ -80,26 +93,24 @@ export default async function Page({ params }: { params: { id: string } }) {
   const channelInfo = times_mapping.filter((item) => {
     return item.id === channelId
   })
-  // 何ヶ月分のデータを分析するか
-  const months = 6
-  const conversationsHistories: any[] = await fetchConversationsHistories(channelId, months)
+  const conversationsHistories: any[] = await fetchConversationsHistories(channelId, MONTHS)
   const messages = searchChannelCreatorsConversations(
     conversationsHistories,
     channelInfo[0].creator,
   )
   return (
     <div className='mx-aut'>
-      <div className='mt-20 text-center'>
-        <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>Analyze other channels...</Link>
-        <div>
-          期間: 直近{messages.length}ヶ月
-        </div>
-      </div>
-      <div className='w-2/3 h-2/3 mt-20 mx-auto'>
         <Suspense fallback={<Loading />}>
-          <LineChart messages={messages} channelName={channelInfo[0].name} />
+          <div className='mt-20 text-center'>
+            <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>Analyze other channels...</Link>
+            <div>
+              期間: 直近{messages.length}ヶ月
+            </div>
+          </div>
+          <div className='w-2/3 h-2/3 mt-20 mx-auto'>
+              <LineChart messages={messages} channelName={channelInfo[0].name} />
+          </div>
         </Suspense>
-      </div>
     </div>
   )
 }
