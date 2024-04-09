@@ -37,9 +37,9 @@ function LineChart({ messages, channelName }: Props) {
     },
     scales: {
       y: {
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   }
 
   const data: ChartData<'line'> = {
