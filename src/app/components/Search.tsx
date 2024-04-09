@@ -21,15 +21,15 @@ const Search = () => {
   }
   return (
     <div className='w-80 my-0 mx-auto'>
-        <input
-          className='w-80 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
-          type='text'
-          placeholder='search times channel...'
-          autoComplete='off'
-          onChange={(e) => {
-            handleChange(e)
-          }}
-        />
+      <input
+        className='w-80 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
+        type='text'
+        placeholder='search times channel...'
+        autoComplete='off'
+        onChange={(e) => {
+          handleChange(e)
+        }}
+      />
       <div
         className={`flex flex-col items-start pt-2 max-h-80 ${searchResult?.length ? 'bg-white overflow-y-scroll border-solid border-2 rounded-md' : ''} `}
       >

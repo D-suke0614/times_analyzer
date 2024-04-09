@@ -54,7 +54,7 @@ const fetchConversationsHistories = async (channelId: string, months: number) =>
       const response: Response = Response.json(rawData)
       const jsonResponse = await response.json()
       conversationsHistories.push(jsonResponse)
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
@@ -100,17 +100,17 @@ export default async function Page({ params }: { params: { id: string } }) {
   )
   return (
     <div className='mx-aut'>
-        <Suspense fallback={<Loading />}>
-          <div className='mt-20 text-center'>
-            <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>Analyze other channels...</Link>
-            <div>
-              期間: 直近{messages.length}ヶ月
-            </div>
-          </div>
-          <div className='w-2/3 h-2/3 mt-20 mx-auto'>
-              <LineChart messages={messages} channelName={channelInfo[0].name} />
-          </div>
-        </Suspense>
+      <Suspense fallback={<Loading />}>
+        <div className='mt-20 text-center'>
+          <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>
+            Analyze other channels...
+          </Link>
+          <div>期間: 直近{messages.length}ヶ月</div>
+        </div>
+        <div className='w-2/3 h-2/3 mt-20 mx-auto'>
+          <LineChart messages={messages} channelName={channelInfo[0].name} />
+        </div>
+      </Suspense>
     </div>
   )
 }
