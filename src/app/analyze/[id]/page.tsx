@@ -101,7 +101,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className='mx-aut'>
       <Suspense fallback={<Loading />}>
-        <div className='mt-20 text-center'>
+        <div className='mt-10 text-center'>
           <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>
             Analyze other channels...
           </Link>
