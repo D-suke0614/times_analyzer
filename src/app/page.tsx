@@ -37,7 +37,7 @@ const fetchChannelList = async () => {
 export default async function Home() {
   // const result = await fetchChannelList()
   return (
-    <main className='h-screen'>
+    <main>
       <div className='pt-16'>
         <Search />
       </div>
