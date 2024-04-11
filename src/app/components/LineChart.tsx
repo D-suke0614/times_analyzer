@@ -20,8 +20,14 @@ type Props = {
   channelName: string
 }
 
+// 日付オブジェクトをあらかじめ作っておく
+const DATE = new Date()
+const getMonth = (idx: number) => {
+  return DATE.getMonth() + idx
+}
+
 function LineChart({ messages, channelName }: Props) {
-  const labels: string[] = messages.map((message: any[], idx: number) => `${idx + 1}months`)
+  const labels: string[] = messages.map((message: any[], idx: number) => `${getMonth(idx + 1)}月`)
 
   const options: ChartOptions<'line'> = {
     responsive: true,

@@ -16,16 +16,29 @@ const MONTHS: number = 6
  */
 const LIMIT: number = 500
 
+type TTiming = 'latest' | 'oldest'
+
 /**
  *
  * @param num
+ * @param timing
  * @returns UnixTimestamp
  */
-const getUnixTimestamp = (num: number = -1): number => {
+const getUnixTimestamp = (num: number, timing: TTiming): number => {
   const date: Date = new Date()
-  return Math.floor(
-    new Date(date.getFullYear(), date.getMonth() + num, date.getDate()).getTime() / 1000,
-  )
+  if (timing === 'latest') {
+    // 月末の日付を返す
+    if (num === 0) {
+      // 今月だけ、今日の日付を返す
+      return Math.floor(
+        new Date(date.getFullYear(), date.getMonth() + num, date.getDate()).getTime() / 1000,
+      )
+    }
+    return Math.floor(new Date(date.getFullYear(), date.getMonth() + num + 1, 0).getTime() / 1000)
+  } else {
+    // 月初の日付を返す
+    return Math.floor(new Date(date.getFullYear(), date.getMonth() + num).getTime() / 1000)
+  }
 }
 
 /**
@@ -40,8 +53,8 @@ const fetchConversationsHistories = async (channelId: string, months: number) =>
   const conversationsHistories = []
 
   for (let i = 0; i < months; i++) {
-    const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i)
-    const oldestUnixTimestamp = getUnixTimestamp(-(i + 1))
+    const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'latest')
+    const oldestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'oldest')
 
     try {
       const rawData: ConversationsHistoryResponse = await client.conversations.history({
