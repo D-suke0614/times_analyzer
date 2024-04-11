@@ -34,14 +34,10 @@ const getUnixTimestamp = (num: number, timing: TTiming): number => {
         new Date(date.getFullYear(), date.getMonth() + num, date.getDate()).getTime() / 1000,
       )
     }
-    return Math.floor(
-      new Date(date.getFullYear(), date.getMonth() + num + 1, 0).getTime() / 1000,
-    )
+    return Math.floor(new Date(date.getFullYear(), date.getMonth() + num + 1, 0).getTime() / 1000)
   } else {
     // 月初の日付を返す
-    return Math.floor(
-      new Date(date.getFullYear(), date.getMonth() + num).getTime() / 1000,
-    )
+    return Math.floor(new Date(date.getFullYear(), date.getMonth() + num).getTime() / 1000)
   }
 }
 
