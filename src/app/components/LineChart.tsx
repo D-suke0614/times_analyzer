@@ -41,7 +41,7 @@ function LineChart({ channelCreatorsConversations, channelName }: Props) {
       title: {
         display: true,
         position: 'top',
-        text: channelName,
+        text: 'timesの分析結果',
       },
     },
     scales: {
