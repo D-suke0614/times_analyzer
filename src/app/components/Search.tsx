@@ -53,8 +53,9 @@ const Search = () => {
           }}
         />
         <button
-          className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500'
+          className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
           type='submit'
+          disabled={!checkedItems.length}
         >
           analyze
         </button>
@@ -72,6 +73,7 @@ const Search = () => {
                     id={result.id}
                     type='checkbox'
                     value={result.id}
+                    defaultChecked={checkedItems.includes(result.id)}
                     onClick={(e) => handleCheckBox(e)}
                   />
                   {result.name}
@@ -83,7 +85,6 @@ const Search = () => {
           <></>
         )}
       </div>
-      {/* <input type="hidden" value={checkedItems} name='channelInfo' /> */}
     </form>
   )
 }
