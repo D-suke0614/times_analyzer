@@ -10,13 +10,14 @@ import {
   ChartOptions,
   ChartData,
   Title,
+  Legend,
 } from 'chart.js'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Legend)
 
 type Props = {
-  messages: any
+  channelCreatorsConversations: any
   channelName: string
 }
 
@@ -26,8 +27,10 @@ const getMonth = (idx: number) => {
   return DATE.getMonth() + idx
 }
 
-function LineChart({ messages, channelName }: Props) {
-  const labels: string[] = messages.map((message: any[], idx: number) => `${getMonth(idx + 1)}月`)
+function LineChart({ channelCreatorsConversations, channelName }: Props) {
+  const labels: string[] = channelCreatorsConversations[0].conversations.map(
+    (message: any[], idx: number) => `${getMonth(idx + 1)}月`,
+  )
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -38,7 +41,7 @@ function LineChart({ messages, channelName }: Props) {
       title: {
         display: true,
         position: 'top',
-        text: channelName,
+        text: 'timesの分析結果',
       },
     },
     scales: {
@@ -48,14 +51,18 @@ function LineChart({ messages, channelName }: Props) {
     },
   }
 
+  const BORDER_COLORS = ['#87cefa', '#7cfc00', '#ffebcd', '#dda0dd', '#d2691e']
+  const BACKGROUND_COLOR = ['#87cefa80', '#7cfc0080', '#ffebcd80', '#dda0dd80', '#d2691e80']
   const data: ChartData<'line'> = {
     labels,
-    datasets: [
-      {
-        data: messages.map((message: any[]) => message.length),
-        borderColor: 'rgb(53, 162, 235)',
-      },
-    ],
+    datasets: channelCreatorsConversations.map((channelCreatorConversations: any, idx: number) => {
+      return {
+        label: channelCreatorConversations.channelInfo.name,
+        data: channelCreatorConversations.conversations.map((message: any[]) => message.length),
+        borderColor: BORDER_COLORS[idx],
+        backgroundColor: BACKGROUND_COLOR[idx],
+      }
+    }),
   }
   return <Line options={options} data={data} />
 }

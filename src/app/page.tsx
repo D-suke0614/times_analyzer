@@ -2,13 +2,6 @@ import { WebClient } from '@slack/web-api'
 import Search from './components/Search'
 
 const fetchChannelList = async () => {
-  // const res = await fetch('http://localhost:3000/api/conversations/list', {
-  //   cache: 'no-store',
-  //   method: 'POST'
-  // })
-  // const formattedResponse = await res.json()
-  // return formattedResponse
-
   const token = process.env.TOKEN
   const webClient = new WebClient(token)
   let cursor
@@ -35,6 +28,8 @@ const fetchChannelList = async () => {
 }
 
 export default async function Home() {
+  // MEMO チャンネル一覧を取得したければ、fetchChannelList()を実行する
+  // TODO チャンネル取得後、欲しいデータだけ整形してjsonファイルに保存されるようにする（チャンネル更新みたいなボタンを用意して、クリックされたら更新されるとかでもいいかも）
   // const result = await fetchChannelList()
   return (
     <main>
