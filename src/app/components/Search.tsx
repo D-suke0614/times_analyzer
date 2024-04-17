@@ -23,13 +23,12 @@ const Search = () => {
 
   const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>) => {
     const value: string = e.currentTarget.value
-    const checked: boolean = e.currentTarget.checked
+    let checked: boolean = e.currentTarget.checked
+    if (checkedItems.length > 5) return
     if (checked) {
-      searchResult.forEach((item) => {
-        if (value === item.id) {
-          checkedItems.push(value)
-        }
-      })
+      const newCheckedItems = [...checkedItems]
+      newCheckedItems.push(value)
+      setCheckedItems(newCheckedItems)
     } else {
       const newCheckedItems = checkedItems.filter((item) => {
         return value !== item
@@ -55,7 +54,7 @@ const Search = () => {
         <button
           className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
           type='submit'
-          // disabled={!checkedItems.length}
+          disabled={!checkedItems.length}
         >
           analyze
         </button>
@@ -75,6 +74,7 @@ const Search = () => {
                     value={result.id}
                     defaultChecked={checkedItems.includes(result.id)}
                     onClick={(e) => handleCheckBox(e)}
+                    disabled={checkedItems.length > 4}
                   />
                   {result.name}
                 </label>
