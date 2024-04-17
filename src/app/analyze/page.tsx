@@ -52,13 +52,13 @@ const fetchConversationsHistories = async (channelIds: string[], months: number)
   const token: string | undefined = process.env.TOKEN
   const client: WebClient = new WebClient(token)
   const conversationsHistoriesObj: any = {}
-  
+
   for (let channelId of channelIds) {
     const conversationsHistories = []
     for (let i = 0; i < months; i++) {
       const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'latest')
       const oldestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'oldest')
-  
+
       try {
         const rawData: ConversationsHistoryResponse = await client.conversations.history({
           token,
@@ -80,8 +80,8 @@ const fetchConversationsHistories = async (channelIds: string[], months: number)
 }
 
 type ChannelInfoType = {
-  id: string,
-  name: string,
+  id: string
+  name: string
   creator: string
 }
 
@@ -97,19 +97,22 @@ const searchChannelCreatorsConversations = (
 ) => {
   const channelCreatorsConversations = channelsInfo.map((channelInfo) => {
     return {
-      'channelInfo': channelInfo,
-      'conversations': conversationsHistoriesObj[channelInfo.id].map((conversationsHistory: any) => {
+      channelInfo: channelInfo,
+      conversations: conversationsHistoriesObj[channelInfo.id].map((conversationsHistory: any) => {
         return conversationsHistory.messages.filter((message: any) => {
-            return message.user === channelInfo.creator
-          })
-      })
-    } 
+          return message.user === channelInfo.creator
+        })
+      }),
+    }
   })
   return channelCreatorsConversations
 }
 
 export default async function Page() {
-  const channelIds = cookies().getAll('channelInfo')[0].value.replace(/\["|"]|"/g, ``).split(',')
+  const channelIds = cookies()
+    .getAll('channelInfo')[0]
+    .value.replace(/\["|"]|"/g, ``)
+    .split(',')
   const channelId = 'CJALX7Z5L'
   // 選択されたtimesチャンネルの情報を取得
   const channelsInfo = times_mapping.filter((item) => {
@@ -130,7 +133,10 @@ export default async function Page() {
           <div>期間: 直近6ヶ月</div>
         </div>
         <div className='w-2/3 h-2/3 mt-20 mx-auto'>
-          <LineChart channelCreatorsConversations={channelCreatorsConversations} channelName={channelsInfo[0].name} />
+          <LineChart
+            channelCreatorsConversations={channelCreatorsConversations}
+            channelName={channelsInfo[0].name}
+          />
         </div>
       </Suspense>
     </div>

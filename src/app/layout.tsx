@@ -20,9 +20,7 @@ export default function RootLayout({
     <html lang='ja'>
       <body className={`${inter.className} bg-slate-300`}>
         <Header />
-        <TimesProvider> 
-          {children}
-        </TimesProvider>
+        <TimesProvider>{children}</TimesProvider>
       </body>
     </html>
   )

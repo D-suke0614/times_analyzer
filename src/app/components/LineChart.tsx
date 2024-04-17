@@ -28,7 +28,9 @@ const getMonth = (idx: number) => {
 }
 
 function LineChart({ channelCreatorsConversations, channelName }: Props) {
-  const labels: string[] = channelCreatorsConversations[0].conversations.map((message: any[], idx: number) => `${getMonth(idx + 1)}月`)
+  const labels: string[] = channelCreatorsConversations[0].conversations.map(
+    (message: any[], idx: number) => `${getMonth(idx + 1)}月`,
+  )
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -49,13 +51,7 @@ function LineChart({ channelCreatorsConversations, channelName }: Props) {
     },
   }
 
-  const BORDER_COLORS = [
-    '#87cefa',
-    '#7cfc00',
-    '#ffebcd',
-    '#dda0dd',
-    '#d2691e',
-  ]
+  const BORDER_COLORS = ['#87cefa', '#7cfc00', '#ffebcd', '#dda0dd', '#d2691e']
   const data: ChartData<'line'> = {
     labels,
     datasets: channelCreatorsConversations.map((channelCreatorConversations: any, idx: number) => {
@@ -64,7 +60,7 @@ function LineChart({ channelCreatorsConversations, channelName }: Props) {
         data: channelCreatorConversations.conversations.map((message: any[]) => message.length),
         borderColor: BORDER_COLORS[idx],
       }
-    })
+    }),
   }
   return <Line options={options} data={data} />
 }

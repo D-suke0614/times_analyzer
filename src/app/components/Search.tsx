@@ -52,7 +52,10 @@ const Search = () => {
             handleChange(e)
           }}
         />
-        <button className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500' type='submit'>
+        <button
+          className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500'
+          type='submit'
+        >
           analyze
         </button>
       </div>
