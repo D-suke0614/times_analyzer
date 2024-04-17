@@ -11,7 +11,7 @@ type TChannelInfo = {
 
 const Search = () => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
-  const [checkedItems, setCheckedItems] = useState<string[]>([])
+  const [checkedItems, setCheckedItems] = useState<string[]>([]) 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.target.value
@@ -44,7 +44,7 @@ const Search = () => {
     <form action={setCookieWithChannelInfo} className='w-80 my-0 mx-auto'>
       <div className='flex items-center'>
         <input
-          className='w-80 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
+          className='w-96 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
           type='text'
           placeholder='search times channel...'
           autoComplete='off'
@@ -55,7 +55,7 @@ const Search = () => {
         <button
           className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
           type='submit'
-          disabled={!checkedItems.length}
+          // disabled={!checkedItems.length}
         >
           analyze
         </button>
