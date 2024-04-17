@@ -52,6 +52,7 @@ function LineChart({ channelCreatorsConversations, channelName }: Props) {
   }
 
   const BORDER_COLORS = ['#87cefa', '#7cfc00', '#ffebcd', '#dda0dd', '#d2691e']
+  const BACKGROUND_COLOR = ['#87cefa80', '#7cfc0080', '#ffebcd80', '#dda0dd80', '#d2691e80']
   const data: ChartData<'line'> = {
     labels,
     datasets: channelCreatorsConversations.map((channelCreatorConversations: any, idx: number) => {
@@ -59,6 +60,7 @@ function LineChart({ channelCreatorsConversations, channelName }: Props) {
         label: channelCreatorConversations.channelInfo.name,
         data: channelCreatorConversations.conversations.map((message: any[]) => message.length),
         borderColor: BORDER_COLORS[idx],
+        backgroundColor: BACKGROUND_COLOR[idx],
       }
     }),
   }
