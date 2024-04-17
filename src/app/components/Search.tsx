@@ -1,7 +1,7 @@
 'use client'
-import Link from 'next/link'
 import React, { useState } from 'react'
 import channels from '../../../times_mapping.json'
+import { setCookie } from '../actions/cookie/action'
 
 type TChannelInfo = {
   id: string
@@ -11,7 +11,7 @@ type TChannelInfo = {
 
 const Search = () => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
-  const [checkedItems, setCheckedItems] = useState<TChannelInfo[]>([])
+  const [checkedItems, setCheckedItems] = useState<string[]>([])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.target.value
@@ -20,25 +20,28 @@ const Search = () => {
     })
     setSearchResult(filteredChannels)
   }
-  const handleCheckBox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value: string = e.target.value
-    const checked: boolean = e.target.checked
+
+  const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>) => {
+    const value: string = e.currentTarget.value
+    const checked: boolean = e.currentTarget.checked
     if (checked) {
       searchResult.forEach((item) => {
         if (value === item.id) {
-          checkedItems.push(item)
+          checkedItems.push(value)
         }
       })
     } else {
       const newCheckedItems = checkedItems.filter((item) => {
-        return value !== item.id
+        return value !== item
       })
       setCheckedItems(newCheckedItems)
     }
-    console.log('checkedItems', checkedItems)
   }
+
+  const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
+
   return (
-    <div className='w-80 my-0 mx-auto'>
+    <form action={setCookieWithChannelInfo} className='w-80 my-0 mx-auto'>
       <div className='flex items-center'>
         <input
           className='w-80 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
@@ -49,7 +52,7 @@ const Search = () => {
             handleChange(e)
           }}
         />
-        <button className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500'>
+        <button className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500' type='submit'>
           analyze
         </button>
       </div>
@@ -59,7 +62,6 @@ const Search = () => {
         {searchResult ? (
           searchResult.map((result: TChannelInfo) => (
             <div className='w-full hover:bg-gray-300 hover:opacity-50' key={result.id}>
-              {/* <Link className='w-full px-2 py-1 block' href={`/analyze/${result.id}`}> */}
               <div className='w-full px-2 py-1'>
                 <label className='text-center flex' htmlFor={result.id}>
                   <input
@@ -67,19 +69,19 @@ const Search = () => {
                     id={result.id}
                     type='checkbox'
                     value={result.id}
-                    onChange={(e) => handleCheckBox(e)}
+                    onClick={(e) => handleCheckBox(e)}
                   />
                   {result.name}
                 </label>
               </div>
-              {/* </Link> */}
             </div>
           ))
         ) : (
           <></>
         )}
       </div>
-    </div>
+      {/* <input type="hidden" value={checkedItems} name='channelInfo' /> */}
+    </form>
   )
 }
 

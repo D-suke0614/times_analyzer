@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from './components/Header'
+import { TimesProvider } from './components/contexts/TimesContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang='ja'>
       <body className={`${inter.className} bg-slate-300`}>
         <Header />
-        {children}
+        <TimesProvider> 
+          {children}
+        </TimesProvider>
       </body>
     </html>
   )
