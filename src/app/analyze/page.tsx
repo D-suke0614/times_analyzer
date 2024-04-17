@@ -54,7 +54,7 @@ const fetchConversationsHistories = async (channelIds: string[], months: number)
   const conversationsHistoriesObj: any = {}
 
   for (let channelId of channelIds) {
-    const conversationsHistories = []
+    const conversationsHistories: any[] = []
     for (let i = 0; i < months; i++) {
       const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'latest')
       const oldestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'oldest')
