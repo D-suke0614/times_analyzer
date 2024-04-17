@@ -11,7 +11,7 @@ type TChannelInfo = {
 
 const Search = () => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
-  const [checkedItems, setCheckedItems] = useState<string[]>([]) 
+  const [checkedItems, setCheckedItems] = useState<string[]>([])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.target.value
