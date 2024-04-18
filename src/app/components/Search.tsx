@@ -37,6 +37,11 @@ const Search = () => {
     }
   }
 
+  const judgeIsDisable = (id: string) => {
+    if (checkedItems.includes(id)) return false
+    return checkedItems.length > 4
+  }
+
   const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
 
   return (
@@ -74,7 +79,7 @@ const Search = () => {
                     value={result.id}
                     defaultChecked={checkedItems.includes(result.id)}
                     onClick={(e) => handleCheckBox(e)}
-                    disabled={checkedItems.length > 4}
+                    disabled={judgeIsDisable(result.id)}
                   />
                   {result.name}
                 </label>
