@@ -5,17 +5,29 @@
 - チャンネル検索
   - APIを叩く処理も実装してあるが、処理に時間がかかるためローカルでチャンネル情報を持っている
 - 分析
-  - 選択したチャンネルの過去6か月間のトーク数を取得して、1か月ごとに比較
-    - シングルセレクトのみでマルチセレクトは現状未対応
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+  - 選択したtimesチャンネルの過去6か月間のトーク数を取得して、1か月ごとに比較
+    - 最大5チャンネル同時に分析可能
 
 ## Getting Started
 
-First, run the development server:
+### envファイルの作成
+
+<https://api.slack.com/apps> にアクセスしてトークンを取得
+
+Scopesで下記を設定
+
+- channels:history
+- groups:history
+- im:history
+- mpim:history
 
 ```bash
-npm run dev
+#.env
+SLACK_CONVERSATIONS_HISTORY_URL=https://slack.com/api/conversations.history
+TOKEN=取得したトークン
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm install
+npm run dev
+```
