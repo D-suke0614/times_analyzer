@@ -41,7 +41,9 @@ const Search = () => {
 
   const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!searchResult.length) return
-    const element: NodeListOf<HTMLElement> = document.querySelectorAll('[data-selector=channel-item]')
+    const element: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '[data-selector=channel-item]',
+    )
     const maxIdx = searchResult.length - 1
     let targetIdx = currentFocusIdx
     if (e.key === 'ArrowDown' && targetIdx < maxIdx) {
@@ -89,7 +91,13 @@ const Search = () => {
       >
         {searchResult ? (
           searchResult.map((result: TChannelInfo) => (
-            <div data-selector='channel-item' tabIndex={1} className='w-full hover:bg-gray-300 hover:opacity-50' key={result.id} onKeyDown={keyDownHandler}>
+            <div
+              data-selector='channel-item'
+              tabIndex={1}
+              className='w-full hover:bg-gray-300 hover:opacity-50'
+              key={result.id}
+              onKeyDown={keyDownHandler}
+            >
               <div className='w-full px-2 py-1'>
                 <label className='text-center flex' htmlFor={result.id}>
                   <input
