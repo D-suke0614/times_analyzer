@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
 import times_mapping from '../../../times_mapping.json'
+import { TTiming, TConversationsHistories, TConversationsHistoriesObj, ChannelInfoType } from '../types'
 import Loading from './loading'
 import LineChart from '@/app/components/LineChart'
 
@@ -16,8 +17,6 @@ const MONTHS: number = 6
  * 一回のリクエストで取得するデータ
  */
 const LIMIT: number = 500
-
-type TTiming = 'latest' | 'oldest'
 
 /**
  *
@@ -51,10 +50,10 @@ const getUnixTimestamp = (num: number, timing: TTiming): number => {
 const fetchConversationsHistories = async (channelIds: string[], months: number) => {
   const token: string | undefined = process.env.TOKEN
   const client: WebClient = new WebClient(token)
-  const conversationsHistoriesObj: any = {}
+  const conversationsHistoriesObj: TConversationsHistoriesObj = {}
 
   for (let channelId of channelIds) {
-    const conversationsHistories: any[] = []
+    const conversationsHistories: TConversationsHistories[] = []
     for (let i = 0; i < months; i++) {
       const latestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'latest')
       const oldestUnixTimestamp = getUnixTimestamp(i === 0 ? i : -i, 'oldest')
@@ -68,7 +67,7 @@ const fetchConversationsHistories = async (channelIds: string[], months: number)
           oldest: oldestUnixTimestamp.toString(),
         })
         const response: Response = Response.json(rawData)
-        const jsonResponse = await response.json()
+        const jsonResponse: TConversationsHistories = await response.json()
         conversationsHistories.push(jsonResponse)
       } catch (e) {
         console.error(e)
@@ -79,12 +78,6 @@ const fetchConversationsHistories = async (channelIds: string[], months: number)
   return conversationsHistoriesObj
 }
 
-type ChannelInfoType = {
-  id: string
-  name: string
-  creator: string
-}
-
 /**
  *
  * @param conversationsHistories
@@ -92,14 +85,14 @@ type ChannelInfoType = {
  * @returns 取得したトーク履歴から、チャンネル作成者の送信した内容だけを取得
  */
 const searchChannelCreatorsConversations = (
-  conversationsHistoriesObj: any,
+  conversationsHistoriesObj: TConversationsHistoriesObj,
   channelsInfo: ChannelInfoType[],
 ) => {
   const channelCreatorsConversations = channelsInfo.map((channelInfo) => {
     return {
       channelInfo: channelInfo,
-      conversations: conversationsHistoriesObj[channelInfo.id].map((conversationsHistory: any) => {
-        return conversationsHistory.messages.filter((message: any) => {
+      conversations: conversationsHistoriesObj[channelInfo.id].map((conversationsHistory: TConversationsHistories) => {
+        return conversationsHistory.messages.filter((message) => {
           return message.user === channelInfo.creator
         })
       }),
@@ -113,12 +106,11 @@ export default async function Page() {
     .getAll('channelInfo')[0]
     .value.replace(/\["|"]|"/g, ``)
     .split(',')
-  const channelId = 'CJALX7Z5L'
   // 選択されたtimesチャンネルの情報を取得
   const channelsInfo = times_mapping.filter((item) => {
     return channelIds.includes(item.id)
   })
-  const conversationsHistoriesObj: any = await fetchConversationsHistories(channelIds, MONTHS)
+  const conversationsHistoriesObj: TConversationsHistoriesObj = await fetchConversationsHistories(channelIds, MONTHS)
   const channelCreatorsConversations = searchChannelCreatorsConversations(
     conversationsHistoriesObj,
     channelsInfo,
