@@ -15,7 +15,7 @@ const Search = () => {
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value: string = e.target.value
+    const value: string = e.currentTarget.value
     const filteredChannels: TChannelInfo[] = channels.filter((channel: TChannelInfo) => {
       return value ? channel.name.match(value) : false
     })
@@ -23,7 +23,7 @@ const Search = () => {
     setCurrentFocusIdx(-1)
   }
 
-  const handleCheckBox = (target: any) => {
+  const handleCheckBox = (target: HTMLInputElement) => {
     const value: string = target.value
     let checked: boolean = target.checked
     if (checkedItems.length > 5) return
