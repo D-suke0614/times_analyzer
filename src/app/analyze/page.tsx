@@ -3,7 +3,12 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
 import times_mapping from '../../../times_mapping.json'
-import { TTiming, TConversationsHistories, TConversationsHistoriesObj, ChannelInfoType } from '../types'
+import {
+  TTiming,
+  TConversationsHistories,
+  TConversationsHistoriesObj,
+  ChannelInfoType,
+} from '../types'
 import Loading from './loading'
 import LineChart from '@/app/components/LineChart'
 
@@ -91,11 +96,13 @@ const searchChannelCreatorsConversations = (
   const channelCreatorsConversations = channelsInfo.map((channelInfo) => {
     return {
       channelInfo: channelInfo,
-      conversations: conversationsHistoriesObj[channelInfo.id].map((conversationsHistory: TConversationsHistories) => {
-        return conversationsHistory.messages.filter((message) => {
-          return message.user === channelInfo.creator
-        })
-      }),
+      conversations: conversationsHistoriesObj[channelInfo.id].map(
+        (conversationsHistory: TConversationsHistories) => {
+          return conversationsHistory.messages.filter((message) => {
+            return message.user === channelInfo.creator
+          })
+        },
+      ),
     }
   })
   return channelCreatorsConversations
@@ -110,7 +117,10 @@ export default async function Page() {
   const channelsInfo = times_mapping.filter((item) => {
     return channelIds.includes(item.id)
   })
-  const conversationsHistoriesObj: TConversationsHistoriesObj = await fetchConversationsHistories(channelIds, MONTHS)
+  const conversationsHistoriesObj: TConversationsHistoriesObj = await fetchConversationsHistories(
+    channelIds,
+    MONTHS,
+  )
   const channelCreatorsConversations = searchChannelCreatorsConversations(
     conversationsHistoriesObj,
     channelsInfo,
