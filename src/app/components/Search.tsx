@@ -41,21 +41,19 @@ const Search = () => {
 
   const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!searchResult.length) return
-    const element: NodeListOf<Element> = document.querySelectorAll('[data-selector=channel-item]')
+    const element: NodeListOf<HTMLElement> = document.querySelectorAll('[data-selector=channel-item]')
     const maxIdx = searchResult.length - 1
     let targetIdx = currentFocusIdx
     if (e.key === 'ArrowDown' && targetIdx < maxIdx) {
       targetIdx += 1
       element[targetIdx].focus()
-      setLastAction('ArrowDown')
     } else if (e.key === 'ArrowUp' && targetIdx > 0) {
       targetIdx -= 1
       element[targetIdx].focus()
-      setLastAction('ArrowUp')
     } else if (e.key === 'Enter') {
       const activeElement = document.activeElement
       if (!activeElement?.children.length) return
-      const checkboxEl = activeElement.children[0].children[0].children[0]
+      const checkboxEl = activeElement.children[0].children[0].children[0] as HTMLInputElement
       if (checkboxEl.disabled) return
       checkboxEl.checked = !checkboxEl.checked
       handleCheckBox(checkboxEl)
