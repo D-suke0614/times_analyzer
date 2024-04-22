@@ -12,6 +12,7 @@ type TChannelInfo = {
 const Search = () => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
+  const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.target.value
@@ -19,11 +20,12 @@ const Search = () => {
       return value ? channel.name.match(value) : false
     })
     setSearchResult(filteredChannels)
+    setCurrentFocusIdx(-1)
   }
 
-  const handleCheckBox = (e: React.MouseEvent<HTMLInputElement>) => {
-    const value: string = e.currentTarget.value
-    let checked: boolean = e.currentTarget.checked
+  const handleCheckBox = (target: any) => {
+    const value: string = target.value
+    let checked: boolean = target.checked
     if (checkedItems.length > 5) return
     if (checked) {
       const newCheckedItems = [...checkedItems]
@@ -35,6 +37,30 @@ const Search = () => {
       })
       setCheckedItems(newCheckedItems)
     }
+  }
+
+  const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!searchResult.length) return
+    const element: NodeListOf<Element> = document.querySelectorAll('[data-selector=channel-item]')
+    const maxIdx = searchResult.length - 1
+    let targetIdx = currentFocusIdx
+    if (e.key === 'ArrowDown' && targetIdx < maxIdx) {
+      targetIdx += 1
+      element[targetIdx].focus()
+      setLastAction('ArrowDown')
+    } else if (e.key === 'ArrowUp' && targetIdx > 0) {
+      targetIdx -= 1
+      element[targetIdx].focus()
+      setLastAction('ArrowUp')
+    } else if (e.key === 'Enter') {
+      const activeElement = document.activeElement
+      if (!activeElement?.children.length) return
+      const checkboxEl = activeElement.children[0].children[0].children[0]
+      if (checkboxEl.disabled) return
+      checkboxEl.checked = !checkboxEl.checked
+      handleCheckBox(checkboxEl)
+    }
+    setCurrentFocusIdx(targetIdx)
   }
 
   const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
@@ -50,6 +76,7 @@ const Search = () => {
           onChange={(e) => {
             handleChange(e)
           }}
+          onKeyDown={keyDownHandler}
         />
         <button
           className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
@@ -64,7 +91,7 @@ const Search = () => {
       >
         {searchResult ? (
           searchResult.map((result: TChannelInfo) => (
-            <div className='w-full hover:bg-gray-300 hover:opacity-50' key={result.id}>
+            <div data-selector='channel-item' tabIndex={1} className='w-full hover:bg-gray-300 hover:opacity-50' key={result.id} onKeyDown={keyDownHandler}>
               <div className='w-full px-2 py-1'>
                 <label className='text-center flex' htmlFor={result.id}>
                   <input
@@ -73,7 +100,7 @@ const Search = () => {
                     type='checkbox'
                     value={result.id}
                     defaultChecked={checkedItems.includes(result.id)}
-                    onClick={(e) => handleCheckBox(e)}
+                    onClick={(e) => handleCheckBox(e.currentTarget)}
                     disabled={checkedItems.length > 4}
                   />
                   {result.name}
