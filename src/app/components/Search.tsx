@@ -47,9 +47,11 @@ const Search = () => {
     const maxIdx = searchResult.length - 1
     let targetIdx = currentFocusIdx
     if (e.key === 'ArrowDown' && targetIdx < maxIdx) {
+      targetIdx > 5 ? () => {} : e.preventDefault()
       targetIdx += 1
       element[targetIdx].focus()
     } else if (e.key === 'ArrowUp' && targetIdx > 0) {
+      maxIdx - 7 < targetIdx ? e.preventDefault() : () => {}
       targetIdx -= 1
       element[targetIdx].focus()
     } else if (e.key === 'Enter') {
