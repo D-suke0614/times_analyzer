@@ -1,8 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { Suspense } from 'react'
-import { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
 function Page() {
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
@@ -15,16 +14,17 @@ function Page() {
   }
   return (
     <div>
-      <button type='button' onClick={fetchChannelList}>チャンネル情報を取得する</button>
-      {
-        isDownloading ? 
+      <button type='button' onClick={fetchChannelList}>
+        チャンネル情報を取得する
+      </button>
+      {isDownloading ? (
         <div className='flex justify-center items-center gap-6 mt-20'>
-        <div className='h-10 w-10 animate-spin border-[5px] border-sky-400 rounded-full  border-t-transparent'></div>
-        <p className='text-[30px] font-weight'>Downloading...</p>
-      </div>
-        : <></>
-        
-      }
+          <div className='h-10 w-10 animate-spin border-[5px] border-sky-400 rounded-full  border-t-transparent'></div>
+          <p className='text-[30px] font-weight'>Downloading...</p>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }
