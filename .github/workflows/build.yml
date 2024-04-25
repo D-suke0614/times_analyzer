@@ -33,6 +33,12 @@ jobs:
         run: | 
           touch .env
           echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }} >> .env '
+          
+      - name: ls
+        run: ls
+
+      - name: cat
+        run: cat .env
 
       - name: app build
         run: npm run build

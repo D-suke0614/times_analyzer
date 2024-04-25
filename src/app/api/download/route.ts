@@ -1,11 +1,10 @@
 import fs from 'fs'
-import path from 'path'
 import { ConversationsListResponse, WebClient } from '@slack/web-api'
 import { Channel } from '@slack/web-api/dist/types/response/ConversationsListResponse'
-import { redirect } from 'next/navigation'
 import { NextResponse } from 'next/server'
 
 export const GET = async () => {
+  return NextResponse.json([])
   console.log('fetch start')
   const token = process.env.TOKEN
   const client = new WebClient(token)
