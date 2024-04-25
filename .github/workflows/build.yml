@@ -29,5 +29,10 @@ jobs:
         if: ${{ steps.node_module_cache_id.outputs.cache-hit != 'true' }}
         run: npm install
 
+      - name: create env
+        run: | 
+          touch .env
+          echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }} >> .env '
+
       - name: app build
         run: npm run build
