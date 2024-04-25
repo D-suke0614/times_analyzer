@@ -29,14 +29,11 @@ jobs:
         if: ${{ steps.node_module_cache_id.outputs.cache-hit != 'true' }}
         run: npm install
 
-      - name: create env
+      - name: create .env file
         run: | 
           pwd
           touch .env
-          echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }} >> .env '
-          
-      - name: ls
-        run: ls -a
+          echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }}' >> .env
 
       - name: cat
         run: cat .env
