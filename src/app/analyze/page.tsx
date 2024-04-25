@@ -2,7 +2,7 @@ import { ConversationsHistoryResponse, WebClient } from '@slack/web-api'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
-import times_mapping from '../../../times_mapping.json'
+import channelInfo from '../../../channel_info.json'
 import {
   TTiming,
   TConversationsHistories,
@@ -114,7 +114,7 @@ export default async function Page() {
     .value.replace(/\["|"]|"/g, ``)
     .split(',')
   // 選択されたtimesチャンネルの情報を取得
-  const channelsInfo = times_mapping.filter((item) => {
+  const channelsInfo: ChannelInfoType[] = channelInfo.filter((item: ChannelInfoType) => {
     return channelIds.includes(item.id)
   })
   const conversationsHistoriesObj: TConversationsHistoriesObj = await fetchConversationsHistories(

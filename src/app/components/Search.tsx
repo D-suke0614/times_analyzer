@@ -1,7 +1,8 @@
 'use client'
 import React, { useState } from 'react'
-import channels from '../../../times_mapping.json'
+import channels from '../../../channel_info.json'
 import { setCookie } from '../actions/cookie/action'
+import { ChannelInfoType } from '../types'
 
 type TChannelInfo = {
   id: string
@@ -9,14 +10,14 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = () => {
+const Search = ({channelInfo}: {channelInfo: ChannelInfoType[]}) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.currentTarget.value
-    const filteredChannels: TChannelInfo[] = channels.filter((channel: TChannelInfo) => {
+    const filteredChannels: TChannelInfo[] = channelInfo.filter((channel: TChannelInfo) => {
       return value ? channel.name.match(value) : false
     })
     setSearchResult(filteredChannels)
