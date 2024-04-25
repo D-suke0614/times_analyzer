@@ -28,7 +28,6 @@ Scopesで下記を設定
 .envファイルの作成
 
 ```bash
-SLACK_CONVERSATIONS_HISTORY_URL=https://slack.com/api/conversations.history
 TOKEN=取得したトークン
 ```
 
