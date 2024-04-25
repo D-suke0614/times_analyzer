@@ -31,11 +31,12 @@ jobs:
 
       - name: create env
         run: | 
+          pwd
           touch .env
           echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }} >> .env '
           
       - name: ls
-        run: ls
+        run: ls -a
 
       - name: cat
         run: cat .env
