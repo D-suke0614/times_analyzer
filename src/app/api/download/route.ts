@@ -4,7 +4,7 @@ import { Channel } from '@slack/web-api/dist/types/response/ConversationsListRes
 import { NextResponse } from 'next/server'
 
 export const GET = async () => {
-  console.log('fetch start')
+  console.log('preparing...')
   const token = process.env.TOKEN
   const client = new WebClient(token)
   let cursor
@@ -16,9 +16,9 @@ export const GET = async () => {
    */
   const timeout = (ms: number) => new Promise((done) => setTimeout(done, ms))
 
-  console.log('completed prepare')
+  console.log('complete prepared')
   while (cursor !== '') {
-    console.log('while')
+    console.log('data fetching...')
     try {
       const response: Response = await client.conversations
         .list({
@@ -30,8 +30,7 @@ export const GET = async () => {
       const data: ConversationsListResponse = await response.json()
       cursor = data.response_metadata?.next_cursor
 
-      // 必要なデータに絞ってからfilterを行う
-      // ちゃんと動くか要確認
+      // 必要な形にしてからfilter
       const filteredData: Channel[] | undefined = data?.channels
         ?.map((channel) => {
           return {
@@ -43,15 +42,11 @@ export const GET = async () => {
         .filter((channel) => {
           return channel.name?.includes('times_')
         })
-
-      console.log('filteredData', filteredData)
-      console.log('cursor', cursor)
       if (filteredData?.length) {
         result.push(...filteredData)
       }
 
       await timeout(3000)
-      console.log('timeout')
     } catch (err) {
       console.error(err)
     }
@@ -60,6 +55,6 @@ export const GET = async () => {
   const fileName = 'channel_info.json'
   const jsonResult = JSON.stringify(result, null, 2)
   fs.writeFile(fileName, jsonResult, () => {})
-  console.log('created')
+  console.log('complete')
   return NextResponse.json(result)
 }

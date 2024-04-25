@@ -25,18 +25,14 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: npm add
+      - name: npm install
         if: ${{ steps.node_module_cache_id.outputs.cache-hit != 'true' }}
         run: npm install
 
       - name: create .env file
         run: | 
-          pwd
           touch .env
           echo 'TOKEN=${{ secrets.SLACK_ACCESS_TOKEN }}' >> .env
-
-      - name: cat
-        run: cat .env
 
       - name: app build
         run: npm run build

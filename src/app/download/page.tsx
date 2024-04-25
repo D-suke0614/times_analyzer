@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { Suspense, useState } from 'react'
+import React, { useState } from 'react'
 
 function Page() {
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
