@@ -23,12 +23,22 @@ function Page() {
       ) : (
         <div className='mx-auto mt-20 w-fit'>
           <p>
-            Slackからtimesチャンネルの情報を取得します。<br/>
+            Slackからtimesチャンネルの情報を取得します。
+            <br />
             この処理には時間がかかることがあります。
           </p>
           <div className='flex justify-start gap-7 mt-5'>
-            <Link className='py-2 px-5 bg-gray-400 rounded-md hover:opacity-75 hover:cursor-pointer' href={'/'}>戻る</Link>
-            <button className='py-2 px-5 bg-cyan-500 rounded-md hover:opacity-75' type='button' onClick={fetchChannelList}>
+            <Link
+              className='py-2 px-5 bg-gray-400 rounded-md hover:opacity-75 hover:cursor-pointer'
+              href={'/'}
+            >
+              戻る
+            </Link>
+            <button
+              className='py-2 px-5 bg-cyan-500 rounded-md hover:opacity-75'
+              type='button'
+              onClick={fetchChannelList}
+            >
               開始
             </button>
           </div>

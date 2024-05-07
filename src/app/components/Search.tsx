@@ -10,7 +10,7 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = ({channelInfo}: {channelInfo: ChannelInfoType[]}) => {
+const Search = ({ channelInfo }: { channelInfo: ChannelInfoType[] }) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
