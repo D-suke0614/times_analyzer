@@ -114,15 +114,17 @@ export default async function Page() {
     ?.value.replace(/\["|"]|"/g, ``)
     ?.split(',')
 
-    // チャンネルが選択されていなければ、次の内容を表示
-    if (!channelIds) {
-      return (
-        <div className='flex flex-col gap-7 mt-10 items-center'>
-          <h2 className='font-bold text-xl'>チャンネルを選択してください</h2>
-          <Link href={'/'} className='hover:underline'>トップページに戻る</Link>
-        </div>
-      )
-    }
+  // チャンネルが選択されていなければ、次の内容を表示
+  if (!channelIds) {
+    return (
+      <div className='flex flex-col gap-7 mt-10 items-center'>
+        <h2 className='font-bold text-xl'>チャンネルを選択してください</h2>
+        <Link href={'/'} className='hover:underline'>
+          トップページに戻る
+        </Link>
+      </div>
+    )
+  }
 
   // 選択されたtimesチャンネルの情報を取得
   const channelsInfo: ChannelInfoType[] = channelInfo.filter((item: ChannelInfoType) => {
