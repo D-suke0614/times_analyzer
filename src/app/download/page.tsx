@@ -9,7 +9,7 @@ function Page() {
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
   const router = useRouter()
 
-  const fetchChannelList = async () => {
+  const fetchChannelList: () => Promise<void> = async () => {
     setIsDownloading(true)
     const res = await fetch('/api/download')
     router.push('/')
@@ -29,8 +29,8 @@ function Page() {
             この処理には時間がかかることがあります。
           </p>
           <div className='flex justify-start gap-7 mt-5'>
-            <LinkButton href='/' text='戻る' />
-            <Button type='button' color='success' text='開始' onClick={fetchChannelList} />
+            <LinkButton href='/' title='戻る' />
+            <Button type='button' color='success' title='開始' onClick={fetchChannelList} />
           </div>
         </div>
       )}

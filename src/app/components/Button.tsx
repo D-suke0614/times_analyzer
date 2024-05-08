@@ -1,10 +1,12 @@
 'use client'
 
+import { MouseEventHandler } from "react"
+
 type ButtonPropsType = {
   type: 'submit' | 'reset' | 'button'
-  text: string
+  title: string
   color?: 'success'
-  onClick?: () => {}
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 const buttonColors = {
@@ -12,7 +14,7 @@ const buttonColors = {
 }
 
 const Button = (props: ButtonPropsType) => {
-  const { type, text, color, onClick } = { ...props }
+  const { type, title, color, onClick } = { ...props }
 
   return (
     <>
@@ -21,7 +23,7 @@ const Button = (props: ButtonPropsType) => {
         type={type}
         onClick={onClick}
       >
-        {text}
+        {title}
       </button>
     </>
   )
