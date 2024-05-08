@@ -42,7 +42,7 @@ function LineChart({ channelCreatorsConversations }: Props) {
       title: {
         display: true,
         position: 'top',
-        text: 'timesの分析結果',
+        text: 'timesチャンネルの投稿数の分析結果',
       },
     },
     scales: {

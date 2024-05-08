@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import channels from '../../../channel_info.json'
 import { setCookie } from '../actions/cookie/action'
 import { ChannelInfoType } from '../types'
 
