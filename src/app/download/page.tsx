@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Button from '../components/Button'
 import LinkButton from '../components/LinkButton'
 
 function Page() {
@@ -29,13 +30,7 @@ function Page() {
           </p>
           <div className='flex justify-start gap-7 mt-5'>
             <LinkButton href='/' text='戻る' />
-            <button
-              className='py-2 px-5 bg-cyan-500 rounded-md hover:opacity-75'
-              type='button'
-              onClick={fetchChannelList}
-            >
-              開始
-            </button>
+            <Button type='button' color='success' text='開始' onClick={fetchChannelList} />
           </div>
         </div>
       )}
