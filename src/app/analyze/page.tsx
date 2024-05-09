@@ -9,6 +9,7 @@ import {
   TConversationsHistoriesObj,
   ChannelInfoType,
 } from '../types'
+import AnalyzeControl from './components/AnalyzeControl'
 import Loading from './loading'
 import LineChart from '@/app/components/LineChart'
 
@@ -138,16 +139,13 @@ export default async function Page() {
     conversationsHistoriesObj,
     channelsInfo,
   )
+
   return (
-    <div className='mx-aut'>
+    <div className='mx-auto'>
       <Suspense fallback={<Loading />}>
-        <div className='mt-10 text-center'>
-          <Link className=' text-lg hover:opacity-50 hover:underline' href={'/'}>
-            Analyze other channels...
-          </Link>
-          <div>期間: 直近6ヶ月</div>
-        </div>
-        <div className='w-2/3 h-2/3 mt-20 mx-auto'>
+        <AnalyzeControl channelIds={channelIds} />
+        <div className='w-2/3 h-2/3 mt-16 mx-auto'>
+          <div className='text-center text-[#696969] text-xs font-bold'>期間：直近6ヶ月</div>
           <LineChart
             channelCreatorsConversations={channelCreatorsConversations}
             channelName={channelsInfo[0].name}

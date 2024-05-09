@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { setCookie } from '../actions/cookie/action'
 import { ChannelInfoType } from '../types'
 
@@ -9,10 +9,23 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = ({ channelInfo }: { channelInfo: ChannelInfoType[] }) => {
+const Search = ({ channelInfo, selectedChannelIds, onClickHandler }: { channelInfo: ChannelInfoType[], selectedChannelIds?: string[], onClickHandler?: () => void }) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
+
+  useEffect(() => {
+    if (!selectedChannelIds) return
+    const initialSearchResult = channelInfo.filter((channel) => {
+      return selectedChannelIds.includes(channel.id)
+    })
+    setSearchResult(initialSearchResult)
+    const initialCheckedChannels = initialSearchResult.map((channel) => {
+      return channel.id
+    })
+    setCheckedItems(initialCheckedChannels)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.currentTarget.value
@@ -84,6 +97,7 @@ const Search = ({ channelInfo }: { channelInfo: ChannelInfoType[] }) => {
           className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
           type='submit'
           disabled={!checkedItems.length}
+          onClick={onClickHandler}
         >
           analyze
         </button>
