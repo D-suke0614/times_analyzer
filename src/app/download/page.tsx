@@ -1,14 +1,15 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Button from '../components/Button'
+import LinkButton from '../components/LinkButton'
 
 function Page() {
   const [isDownloading, setIsDownloading] = useState<boolean>(false)
   const router = useRouter()
 
-  const fetchChannelList = async () => {
+  const fetchChannelList: () => Promise<void> = async () => {
     setIsDownloading(true)
     const res = await fetch('/api/download')
     router.push('/')
@@ -28,19 +29,8 @@ function Page() {
             この処理には時間がかかることがあります。
           </p>
           <div className='flex justify-start gap-7 mt-5'>
-            <Link
-              className='py-2 px-5 bg-gray-400 rounded-md hover:opacity-75 hover:cursor-pointer'
-              href={'/'}
-            >
-              戻る
-            </Link>
-            <button
-              className='py-2 px-5 bg-cyan-500 rounded-md hover:opacity-75'
-              type='button'
-              onClick={fetchChannelList}
-            >
-              開始
-            </button>
+            <LinkButton href='/' title='戻る' />
+            <Button type='button' color='success' title='開始' onClick={fetchChannelList} />
           </div>
         </div>
       )}

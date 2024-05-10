@@ -1,6 +1,5 @@
 'use client'
-import React, { useState } from 'react'
-import channels from '../../../channel_info.json'
+import React, { useEffect, useState } from 'react'
 import { setCookie } from '../actions/cookie/action'
 import { ChannelInfoType } from '../types'
 
@@ -10,10 +9,31 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = ({ channelInfo }: { channelInfo: ChannelInfoType[] }) => {
+const Search = ({
+  channelInfo,
+  selectedChannelIds,
+  onSubmitHandler,
+}: {
+  channelInfo: ChannelInfoType[]
+  selectedChannelIds?: string[]
+  onSubmitHandler?: () => void
+}) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
+
+  useEffect(() => {
+    if (!selectedChannelIds) return
+    const initialSearchResult = channelInfo.filter((channel) => {
+      return selectedChannelIds.includes(channel.id)
+    })
+    setSearchResult(initialSearchResult)
+    const initialCheckedChannels = initialSearchResult.map((channel) => {
+      return channel.id
+    })
+    setCheckedItems(initialCheckedChannels)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.currentTarget.value
@@ -69,7 +89,11 @@ const Search = ({ channelInfo }: { channelInfo: ChannelInfoType[] }) => {
   const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
 
   return (
-    <form action={setCookieWithChannelInfo} className='w-80 my-0 mx-auto'>
+    <form
+      action={setCookieWithChannelInfo}
+      onSubmit={onSubmitHandler}
+      className='w-80 my-0 mx-auto'
+    >
       <div className='flex items-center'>
         <input
           className='w-96 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
