@@ -1,6 +1,6 @@
 'use client'
 
-import { MouseEventHandler } from "react"
+import { MouseEventHandler } from 'react'
 
 type ButtonPropsType = {
   type: 'submit' | 'reset' | 'button'
@@ -10,7 +10,7 @@ type ButtonPropsType = {
 }
 
 const buttonColors = {
-  success: 'bg-cyan-500'
+  success: 'bg-cyan-500',
 }
 
 const Button = (props: ButtonPropsType) => {
@@ -18,8 +18,8 @@ const Button = (props: ButtonPropsType) => {
 
   return (
     <>
-      <button 
-        className={`py-2 px-5 rounded-md hover:opacity-75 ${color ? buttonColors[color] : ''}`} 
+      <button
+        className={`py-2 px-5 rounded-md hover:opacity-75 ${color ? buttonColors[color] : ''}`}
         type={type}
         onClick={onClick}
       >

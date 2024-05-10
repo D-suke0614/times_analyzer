@@ -9,7 +9,15 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = ({ channelInfo, selectedChannelIds, onSubmitHandler }: { channelInfo: ChannelInfoType[], selectedChannelIds?: string[], onSubmitHandler?: () => void }) => {
+const Search = ({
+  channelInfo,
+  selectedChannelIds,
+  onSubmitHandler,
+}: {
+  channelInfo: ChannelInfoType[]
+  selectedChannelIds?: string[]
+  onSubmitHandler?: () => void
+}) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
@@ -24,7 +32,7 @@ const Search = ({ channelInfo, selectedChannelIds, onSubmitHandler }: { channelI
       return channel.id
     })
     setCheckedItems(initialCheckedChannels)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +89,11 @@ const Search = ({ channelInfo, selectedChannelIds, onSubmitHandler }: { channelI
   const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
 
   return (
-    <form action={setCookieWithChannelInfo} onSubmit={onSubmitHandler} className='w-80 my-0 mx-auto'>
+    <form
+      action={setCookieWithChannelInfo}
+      onSubmit={onSubmitHandler}
+      className='w-80 my-0 mx-auto'
+    >
       <div className='flex items-center'>
         <input
           className='w-96 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
