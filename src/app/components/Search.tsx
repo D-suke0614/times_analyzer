@@ -9,7 +9,7 @@ type TChannelInfo = {
   creator: string
 }
 
-const Search = ({ channelInfo, selectedChannelIds, onClickHandler }: { channelInfo: ChannelInfoType[], selectedChannelIds?: string[], onClickHandler?: () => void }) => {
+const Search = ({ channelInfo, selectedChannelIds, onSubmitHandler }: { channelInfo: ChannelInfoType[], selectedChannelIds?: string[], onSubmitHandler?: () => void }) => {
   const [searchResult, setSearchResult] = useState<TChannelInfo[]>([])
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [currentFocusIdx, setCurrentFocusIdx] = useState<number>(0)
@@ -81,7 +81,7 @@ const Search = ({ channelInfo, selectedChannelIds, onClickHandler }: { channelIn
   const setCookieWithChannelInfo = setCookie.bind(null, checkedItems)
 
   return (
-    <form action={setCookieWithChannelInfo} className='w-80 my-0 mx-auto'>
+    <form action={setCookieWithChannelInfo} onSubmit={onSubmitHandler} className='w-80 my-0 mx-auto'>
       <div className='flex items-center'>
         <input
           className='w-96 border-solid border-2 rounded-md focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 p-1'
@@ -97,7 +97,6 @@ const Search = ({ channelInfo, selectedChannelIds, onClickHandler }: { channelIn
           className='border-solid border-2 rounded-md bg-white p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 disabled:hover:bg-white disabled:hover:text-gray-400'
           type='submit'
           disabled={!checkedItems.length}
-          onClick={onClickHandler}
         >
           analyze
         </button>

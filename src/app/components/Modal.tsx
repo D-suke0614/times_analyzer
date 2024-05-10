@@ -22,7 +22,7 @@ const Modal = (props: ModalPropsType) => {
               <span className="block w-8 h-0.5 bg-white duration-300 -rotate-45"></span>
             </button>
           </div>
-          <Search channelInfo={channel_info} selectedChannelIds={channelIds} onClickHandler={() => setDisplayed(false)} />
+          <Search channelInfo={channel_info} selectedChannelIds={channelIds} onSubmitHandler={() => setDisplayed(false)} />
         </div>
       :
         <></>
