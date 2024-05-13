@@ -19,7 +19,6 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, L
 
 type Props = {
   channelCreatorsConversations: TChannelCreatorsConversations
-  channelName: string
 }
 
 // 日付オブジェクトをあらかじめ作っておく
@@ -71,7 +70,9 @@ function LineChart({ channelCreatorsConversations }: Props) {
       }
     }),
   }
-  return <Line options={options} data={data} />
+  return (
+    <Line options={options} data={data} />
+  ) 
 }
 
 export default LineChart
