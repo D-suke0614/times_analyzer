@@ -1,7 +1,7 @@
 'use client'
 
-import Link from "next/link"
-import { useState } from "react"
+import Link from 'next/link'
+import { useState } from 'react'
 import channel_info from '../../../channel_info.json'
 
 const HamburgerMenu = () => {

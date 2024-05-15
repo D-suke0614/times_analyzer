@@ -6,7 +6,6 @@ import HamburgerMenu from './HamburgerMenu'
 
 // TODO: チャンネル取得する動線ではヘッダーのリンクは非表示に
 function Header() {
-
   return (
     <header className='h-16 bg-slate-700 flex justify-between'>
       <div>
