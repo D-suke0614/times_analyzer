@@ -146,9 +146,7 @@ export default async function Page() {
       <div className='w-2/3 h-2/3 mt-16 mx-auto'>
         <div className='text-center text-[#696969] text-xs font-bold'>期間：直近6ヶ月</div>
         <Suspense fallback={<Loading />}>
-          <LineChart
-            channelCreatorsConversations={channelCreatorsConversations}
-          />
+          <LineChart channelCreatorsConversations={channelCreatorsConversations} />
         </Suspense>
       </div>
     </div>
