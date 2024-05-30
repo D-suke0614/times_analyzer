@@ -19,18 +19,23 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, L
 
 type Props = {
   channelCreatorsConversations: TChannelCreatorsConversations
-  channelName: string
 }
 
 // 日付オブジェクトをあらかじめ作っておく
 const DATE = new Date()
 const getMonth = (idx: number) => {
-  return DATE.getMonth() + idx
+  const baseMonth = DATE.getMonth() + 1
+  const currentMonth = baseMonth - idx
+  if (currentMonth > 0) {
+    return currentMonth
+  }
+  // 0以下の場合は月に変換する
+  return currentMonth + 12
 }
 
 function LineChart({ channelCreatorsConversations }: Props) {
   const labels: string[] = channelCreatorsConversations[0].conversations.map(
-    (_, idx: number) => `${getMonth(idx + 1)}月`,
+    (_, idx: number) => `${getMonth(idx)}月`,
   )
 
   const options: ChartOptions<'line'> = {

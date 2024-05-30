@@ -142,16 +142,13 @@ export default async function Page() {
 
   return (
     <div className='mx-auto'>
-      <Suspense fallback={<Loading />}>
-        <AnalyzeControl channelIds={channelIds} />
-        <div className='w-2/3 h-2/3 mt-16 mx-auto'>
-          <div className='text-center text-[#696969] text-xs font-bold'>期間：直近6ヶ月</div>
-          <LineChart
-            channelCreatorsConversations={channelCreatorsConversations}
-            channelName={channelsInfo[0].name}
-          />
-        </div>
-      </Suspense>
+      <AnalyzeControl channelIds={channelIds} />
+      <div className='w-2/3 h-2/3 mt-16 mx-auto'>
+        <div className='text-center text-[#696969] text-xs font-bold'>期間：直近6ヶ月</div>
+        <Suspense fallback={<Loading />}>
+          <LineChart channelCreatorsConversations={channelCreatorsConversations} />
+        </Suspense>
+      </div>
     </div>
   )
 }
